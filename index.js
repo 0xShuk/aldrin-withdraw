@@ -6,12 +6,17 @@ import base58 from "bs58";
 import { BN } from "bn.js";
 import * as token from "@solana/spl-token";
 
+const keypair = Keypair.fromSecretKey(
+    Uint8Array.from(base58.decode("ENTER_PRIVATE_KEY_HERE"))
+);
+
+const wallet = new Wallet(keypair);
+const connection = new Connection(clusterApiUrl("mainnet-beta"));
+
 (async() => {
     // const tokenSwap = await TokenSwap.initialize(connection, wallet);
     const pool = new PoolClient(connection);
     const tokenClient = new TokenClient(connection);
-    const farmClient = new FarmingClient(connection);
-    const aldrinClient = new DTwapClient(connection);
 
     const poolMint = new PublicKey("9bCjWxNQ2WQFuQzsV7g5S3m8qCQ8ub6pd13nWUoXz2eh");
 
@@ -33,18 +38,32 @@ import * as token from "@solana/spl-token";
 
     const price = quoteVaultAccount.amount.mul(new BN(1_000_000)).div(baseVaultAccount.amount)
 
-    // const pools = await pool.getV2Pools();
-    // const poolAccount = pools.find((p) => p.poolMint.equals(poolMint))
+    const pools = await pool.getV2Pools();
+    const poolAccount = pools.find((p) => p.poolMint.equals(poolMint))
 
-    // const balance = await token.getAccount(connection, userPoolTokenAccount);
+    const balance = await token.getAccount(connection, userPoolTokenAccount);
 
-    const bal = new BN("c6ff", "hex");
+    // console.log(poolAccount)
 
-    const txId = await farmClient.startFarming({
-        farm: new PublicKey("5T5T3WHmXDZqM7E1Hi9PNCBFN33Baxvd64jdEPidmYPr"),
+    // const txId = await pool.depositLiquidity({
+    //     wallet: wallet,
+    //     pool: poolAccount,
+    //     userBaseTokenAccount: userBaseTokenAccount,
+    //     userPoolTokenAccount: userPoolTokenAccount,
+    //     userQuoteTokenAccount: userQuoteTokenAccount,
+    //     maxBaseTokenAmount: maxQuote.mul(new BN(1_000_000)).div(price),
+    //     maxQuoteTokenAmount: maxQuote
+    // })
+
+    const txId = await pool.withdrawLiquidity({
+        pool: poolAccount,
+        userBaseTokenAccount,
+        userPoolTokenAccount,
+        userQuoteTokenAccount,
         wallet,
-        tokenAmount: bal,
+        poolTokenAmount: new BN(balance.amount.toString(16), "hex")
     })
 
-    console.log(txId)
+    console.log("TX Successful: ", txId);
+    console.log("Liquidity successfully withdrawn")
 })()
