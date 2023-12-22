@@ -70,7 +70,7 @@ const connection = new Connection("rpc_here");
     const farmingClient = new FarmingClient(connection);
 
     // const farm = await farmingClient.getFarmingTickets({
-    //     pool: new PublicKey("5T5T3WHmXDZqM7E1Hi9PNCBFN33Baxvd64jdEPidmYPr"),
+    //     pool: new PublicKey("2BNq1R3wyjHj6BkgDKewW7F4BsAgJoLm2yWUD6tmHq9U"),
     //     userKey: new PublicKey("7XopJZCEdB1fzDQGCFJ1QC5dv5LC36AEMQkEGfHaMoRj"),
     //     poolVersion: 2
     // });
@@ -87,27 +87,30 @@ const connection = new Connection("rpc_here");
     // });
 
     // const vv = await farmingClient.getFarmingState({
-    //     poolPublicKey: new PublicKey("5T5T3WHmXDZqM7E1Hi9PNCBFN33Baxvd64jdEPidmYPr"),
+    //     poolPublicKey: new PublicKey("2BNq1R3wyjHj6BkgDKewW7F4BsAgJoLm2yWUD6tmHq9U"),
     //     poolVersion: 2
     // })
     
+    // fs.writeFileSync(path, JSON.stringify(vv));
+
     const states = [
-        '8fEodAk3kY98Tgtk4cGRMtAbJrsuQ1DWmEcHRvwGj9Re',
-        'DwUvKrgUktfXQbsbtXuY9b5aBkqPUoaScDHttLtZnhja',
-        '3qTPeNBSWFUpUKFJ73Xf3zhPDd5zcWhMX7pDL8BuhKBm',
-        'CUx1WNutujhVMHwVFJeYiJmhakXsy4F5H81R367LZY5r',
-        'BbG68ZYw1CkssaAzk5zt7tjEjRbsNqiaho3kN7bLJS5W',
-        '75c1QdiTXe8EMNUtvQgJ8hVB2sxRoX7MAHsRxecmxzHH',
-        '9G6tz3sv5Qqm7PWvMALVbdwNKwGhRgt5h5rznXiHtPYY',
-        '2tytKi6yZTLmmzMZ6taodCjrz6AZYV263Y6vMfQAban4',
-        'CxQnmGhriswhPGYzCVDkhACVT7REXkx9oiABEBaHw8si',
-        'GojAGKNpP9tKN5KVsh8Tr2JcVRLmWUf6DbhpoBGWmyZb',
-        '3R9NoTW2DL5cQhFdM59Fjs8L5TvyJdMnYgyLwfwk8PiQ',
-        '2xmNhygagjWQf9En3uQAqMiv24QvUfYYbcHVgrCnEDAs',
-        '5MjyXpuA8ix31kENp7NehDt4hXUgWrreLDewisU7Ynm',
+        '3QFsTMHLu5TPktqN2KL71dgnS5zVc3Fs7QpD7Do4jTBF',
+        'HsgrKYtUJKLFm25sZMmWE9amCfyVifv4xt7wfxevx59b',
+        '39Z6EAP6AeMfRkk7xwvgcmXH1FkwCmQDUCT3rYCqeBCU',
+        '3wg52jzC5FZZtRxWizPr6yAQNR1yBchN81cPFMu4FdGg',
+        'DqDACzKLat6c9ci52WweJNTbDoqnB1UmTRFfJkH4VJJt',
+        '3Au4LPWFzQPtikQtaNPUhkXMgz38ycPcYH6uVA8XS2hG',
+        '4zpKE45V23hNbHa6suEn5tMK3cN4zP8AmBFkYgM1WRcC',
+        '9FFRniTjA4BmzFAUx7Uqg4DigEZ7c1aVTgwqcinf3737',
+        'CMbnKtRAWskB8LL6D3my2MqRTLYC1o8UVNkQujqf7qET',
+        '5p1hCdXbwJWM1XYdhryaFzfDHo22MPGAqyKwxaWZexNb',
+        'iBVJWX9y8whidbWYSLbLit5DEADkeEwJ8j7DZvCzVcF',
+        'Ed97U8PG5qHapfgQ6AhZtgYpS2tgN12uHiSYes42WmG3',
+        '6WNtsQ9JRnrmbDmT9icxQW1VeLCD6SJmZ9t1izkd8Mhg',
+        'GtsK2GeYeZGzBN9sK4k4Wf4YP62XtwuvpGhJCcxsrGNg',
     ];
 
-    const usdcAccounts = [];
+    const usdtAccounts = [];
     const data = JSON.parse(fs.readFileSync(path));
 
     for (let i = 0; i < states.length; i++) {
@@ -127,10 +130,9 @@ const connection = new Connection("rpc_here");
         const xx = data.find(d => d.farmingStatePublicKey === states[i]);
         entry.vault = xx.farmingTokenVault;
         
-        usdcAccounts.push(entry);
+        usdtAccounts.push(entry);
     };
 
-    console.log(usdcAccounts);
-    // console.log("TX Successful: ", txId);
-    // console.log("Liquidity successfully withdrawn")
+    console.log(usdtAccounts);
+
 })()
